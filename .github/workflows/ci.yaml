@@ -30,7 +30,7 @@ jobs:
         id: uv-cache
         with:
           path: ~/.cache/uv
-          key: uv-cache-%{{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('**/uv.lock', '**pyproject.toml') }}
+          key: uv-cache-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('**/uv.lock', '**pyproject.toml') }}
           restore-keys: |
             uv-cache-${{ runner.os }}-${{ matrix.python-version }}-
 
