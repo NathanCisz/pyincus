@@ -1,0 +1,48 @@
+name: CI Pipeline
+
+on:
+  Push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.13] # No futuro mais versões: ["3.12", "3.13"]
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Instalar UV
+        run: |
+          python -m pip install --upgrade pip
+          pip install uv
+
+      - name: Configurar cache para UV
+        uses: actions/cache@v4
+        id: uv-cache
+        with:
+          path: ~/.cache/uv
+          key: uv-cache-%{{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('**/uv.lock', '**pyproject.toml') }}
+          restore-keys: |
+            uv-cache-${{ runner.os }}-${{ matrix.python-version }}-
+
+      - name: Instalar dependências
+        if: steps.uv-cache.outputs.cache-hit != 'true'
+        run: uv sync --all-groups
+
+      - name: Rodar Lint (Ruff)
+        run: make lint
+
+      - name: Rodar Análise Estática (MyPy)
+        run: make static
+
+      - name: Rodar Testes (PyTest)
+        run: make test
