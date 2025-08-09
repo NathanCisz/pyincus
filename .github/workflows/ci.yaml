@@ -24,6 +24,9 @@ jobs:
       - name: Setup uv
         uses: astral-sh/setup-uv@v1
 
+      - name: Create Virtual Environment
+        run: uv venv
+
       - name: Install all dependencies
         run: uv sync --all-extras
 
@@ -50,6 +53,9 @@ jobs:
 
       - name: Setup uv
         uses: astral-sh/setup-uv@v1
+
+      - name: Create Virtual Environment
+        run: uv venv
 
       - name: Install build dependencies
         run: uv pip install .[build]
