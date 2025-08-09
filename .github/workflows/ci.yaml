@@ -27,8 +27,11 @@ jobs:
       - name: Create Virtual Environment
         run: uv venv
 
-      - name: Install all dependencies
-        run: uv sync --all-extras
+      - name: Install project dependencies
+        run: uv sync
+
+      - name: Install quality tools
+        run: uv pip install ruff mypy pytest
 
       - name: Run linter (Ruff)
         run: uv run ruff check .
@@ -57,8 +60,8 @@ jobs:
       - name: Create Virtual Environment
         run: uv venv
 
-      - name: Install build dependencies
-        run: uv pip install .[build]
+      - name: Install build tool
+        run: uv pip install build
 
       - name: Build project
         run: uv run python -m build
