@@ -31,7 +31,7 @@ jobs:
         run: uv sync
 
       - name: Install quality tools
-        run: uv pip install ruff mypy pytest
+        run: uv pip install ruff mypy pytest pytest-cov
 
       - name: Run linter (Ruff)
         run: uv run ruff check .
