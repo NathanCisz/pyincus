@@ -24,8 +24,8 @@ jobs:
       - name: Setup uv
         uses: astral-sh/setup-uv@v1
 
-      - name: Install dependencies
-        run: uv sync --all-groups
+      - name: Install all dependencies
+        run: uv sync --all-extras
 
       - name: Run linter (Ruff)
         run: uv run ruff check .
@@ -52,7 +52,7 @@ jobs:
         uses: astral-sh/setup-uv@v1
 
       - name: Install build dependencies
-        run: uv sync --with build
+        run: uv pip install .[build]
 
       - name: Build project
         run: uv run python -m build
